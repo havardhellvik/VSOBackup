@@ -30,12 +30,18 @@ namespace VsoBackup.Services
         public void Clone(Value value, string path)
         {
             _logger.WriteLog("Cloning repository '{0}'", value.name);
-            var pathlocal = Repository.Clone(HttpUtility.UrlPathEncode(value.remoteUrl), path, new CloneOptions()
+            string localpath = Repository.Clone(HttpUtility.UrlPathEncode(value.remoteUrl), path, new CloneOptions()
              {
                  CredentialsProvider = CredentialsProvider
              });
-            var repo = new Repository(pathlocal);
-            foreach (var branch in repo.Branches)
+            if (_allConfiguration.VsoConfiguration.AllBranches)
+                CheckoutAllBranches(localpath);
+        }
+
+        public void CheckoutAllBranches(string localpath)
+        {
+            Repository repo = new Repository(localpath);
+            foreach (Branch branch in repo.Branches)
             {
                 string localName = branch.Name;
                 if (localName.Contains("origin/") && !localName.Contains("master"))
@@ -50,14 +56,13 @@ namespace VsoBackup.Services
                         Branch trackingBranch = repo.Branches[localName];
                         repo.Checkout(trackingBranch);
                     }
-                    catch(System.Exception ex)
+                    catch (System.Exception ex)
                     {
-                        //Gets exception of some repos when trying to create an existing branch..
+                        //Gets exception on some repos when trying to create an existing branch..
                         //NameConflictException
                     }
                 }
             }
-
         }
     }
 }

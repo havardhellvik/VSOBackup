@@ -28,9 +28,10 @@ namespace VsoBackup.Configuration
             get { return this["AllRepositoriesUrl"].ToString(); }
         }
 
-
-        
-
-
+        [ConfigurationProperty("AllBranches", IsRequired = false)]
+        public bool AllBranches
+        {
+            get { return this["AllBranches"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase); }
+        }
     }
 }

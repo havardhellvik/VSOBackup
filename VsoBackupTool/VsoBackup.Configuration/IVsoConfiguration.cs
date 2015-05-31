@@ -7,5 +7,6 @@ namespace VsoBackup.Configuration
         string ApiUsername { get; }
         string ApiPassword { get; }
         string AllRepositoriesUrl { get; }
+        bool AllBranches { get; }
     }
 }
