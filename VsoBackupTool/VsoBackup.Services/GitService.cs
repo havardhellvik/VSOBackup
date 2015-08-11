@@ -11,7 +11,8 @@ namespace VsoBackup.Services
         private readonly IAllConfiguration _allConfiguration;
         private readonly ILogger _logger;
         private Credentials _credentials;
-        public GitService(IAllConfiguration allConfiguration,ILogger logger)
+
+        public GitService(IAllConfiguration allConfiguration, ILogger logger)
         {
             _allConfiguration = allConfiguration;
             _logger = logger;
